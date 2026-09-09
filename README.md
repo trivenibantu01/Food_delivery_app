@@ -4,7 +4,9 @@ A Flutter-based Food Delivery Application developed as part of the UI Design Flu
 
 ## Project Description
 
-The Food Delivery App provides a simple and user-friendly interface for browsing food items, viewing categories, searching for food, and adding items to the cart.
+The Food Delivery App is a Flutter application designed to provide a simple and user-friendly interface for browsing food items, viewing categories, searching for food, and adding items to the cart.
+
+The application is developed using Flutter and Dart and is designed to support multiple platforms.
 
 ## Technologies Used
 
@@ -16,30 +18,31 @@ The Food Delivery App provides a simple and user-friendly interface for browsing
 
 ## Features
 
+- Home screen
 - Food categories
 - Search for food
 - Popular food items
-- Add items to cart
+- Add food items to cart
 - Food delivery user interface
-- Cross-platform support
+- Cross-platform Flutter support
 
-## Experiments Progress
+## Project Structure
 
-| Experiment | Description | Status |
-|------------|-------------|--------|
-| Experiment 01 | Dart Basics | Completed |
-| Experiment 02 | Flutter UI | In Progress |
-| Experiment 03 | Flutter Widgets | Pending |
-| Experiment 04 | Layouts | Pending |
-| Experiment 05 | Navigation | Pending |
-| Experiment 06 | Forms and Input | Pending |
-| Experiment 07 | Lists and Grids | Pending |
-| Experiment 08 | State Management | Pending |
-| Experiment 09 | Application Development | Pending |
-| Experiment 10 | Final Application | Pending |
-
-## How to Run
-
-```bash
-flutter pub get
-flutter run -d chrome
+```text
+Food_delivery_app/
+│
+├── android/
+├── ios/
+├── linux/
+├── macos/
+├── web/
+├── windows/
+├── lib/
+├── test/
+│
+├── Experiment-01-Dart-Basics/
+│
+├── pubspec.yaml
+├── pubspec.lock
+├── README.md
+└── .gitignore
