@@ -1,4 +1,3 @@
-# food_delivery_app
 # Food Delivery App
 
 A Flutter-based Food Delivery Application developed as part of the UI Design Flutter Lab.
