@@ -1,17 +1,49 @@
 # food_delivery_app
+# Food Delivery App
 
-A new Flutter project.
+A Flutter-based Food Delivery Application developed as part of the UI Design Flutter Lab.
 
-## Getting Started
+## Project Description
 
-This project is a starting point for a Flutter application.
+The Food Delivery App is a Flutter application designed to provide a simple and user-friendly interface for browsing food items, viewing categories, searching for food, and adding items to the cart.
 
-A few resources to get you started if this is your first Flutter project:
+The application is developed using Flutter and Dart and is designed to support multiple platforms.
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## Technologies Used
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Flutter
+- Dart
+- Visual Studio Code
+- Git
+- GitHub
+
+## Features
+
+- Home screen
+- Food categories
+- Search for food
+- Popular food items
+- Add food items to cart
+- Food delivery user interface
+- Cross-platform Flutter support
+
+## Project Structure
+
+```text
+Food_delivery_app/
+│
+├── android/
+├── ios/
+├── linux/
+├── macos/
+├── web/
+├── windows/
+├── lib/
+├── test/
+│
+├── Experiment-01-Dart-Basics/
+│
+├── pubspec.yaml
+├── pubspec.lock
+├── README.md
+└── .gitignore
