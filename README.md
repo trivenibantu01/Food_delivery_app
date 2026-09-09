@@ -1,17 +1,45 @@
-# food_delivery_app
+# Food Delivery App
 
-A new Flutter project.
+A Flutter-based Food Delivery Application developed as part of the UI Design Flutter Lab.
 
-## Getting Started
+## Project Description
 
-This project is a starting point for a Flutter application.
+The Food Delivery App provides a simple and user-friendly interface for browsing food items, viewing categories, searching for food, and adding items to the cart.
 
-A few resources to get you started if this is your first Flutter project:
+## Technologies Used
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+- Flutter
+- Dart
+- Visual Studio Code
+- Git
+- GitHub
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Features
+
+- Food categories
+- Search for food
+- Popular food items
+- Add items to cart
+- Food delivery user interface
+- Cross-platform support
+
+## Experiments Progress
+
+| Experiment | Description | Status |
+|------------|-------------|--------|
+| Experiment 01 | Dart Basics | Completed |
+| Experiment 02 | Flutter UI | In Progress |
+| Experiment 03 | Flutter Widgets | Pending |
+| Experiment 04 | Layouts | Pending |
+| Experiment 05 | Navigation | Pending |
+| Experiment 06 | Forms and Input | Pending |
+| Experiment 07 | Lists and Grids | Pending |
+| Experiment 08 | State Management | Pending |
+| Experiment 09 | Application Development | Pending |
+| Experiment 10 | Final Application | Pending |
+
+## How to Run
+
+```bash
+flutter pub get
+flutter run -d chrome
