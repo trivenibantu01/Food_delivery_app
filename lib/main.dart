@@ -23,25 +23,15 @@ class FoodDeliveryApp extends StatelessWidget {
   }
 }
 
-  class HomePage extends StatelessWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Food Delivery',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.shopping_cart_outlined),
-          ),
-        ],
+        title: const Text('Food Delivery'),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -49,7 +39,7 @@ class FoodDeliveryApp extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'What are you craving today? 🍔',
+              'What would you like to eat?',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -58,10 +48,9 @@ class FoodDeliveryApp extends StatelessWidget {
 
             const SizedBox(height: 16),
 
-            // Search bar
             TextField(
               decoration: InputDecoration(
-                hintText: 'Search for food...',
+                hintText: 'Search food...',
                 prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -74,38 +63,37 @@ class FoodDeliveryApp extends StatelessWidget {
             const Text(
               'Categories',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 22,
                 fontWeight: FontWeight.bold,
               ),
             ),
 
             const SizedBox(height: 12),
 
-            // Categories
             SizedBox(
-              height: 100,
+              height: 110,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: const [
                   CategoryItem(
-                    icon: Icons.local_pizza,
-                    name: 'Pizza',
+                    icon: Icons.fastfood,
+                    name: 'Burger',
                   ),
                   CategoryItem(
-                    icon: Icons.lunch_dining,
-                    name: 'Burgers',
+                    icon: Icons.local_pizza,
+                    name: 'Pizza',
                   ),
                   CategoryItem(
                     icon: Icons.ramen_dining,
                     name: 'Noodles',
                   ),
                   CategoryItem(
-                    icon: Icons.local_cafe,
+                    icon: Icons.local_drink,
                     name: 'Drinks',
                   ),
                   CategoryItem(
-                    icon: Icons.icecream,
-                    name: 'Desserts',
+                    icon: Icons.cake,
+                    name: 'Dessert',
                   ),
                 ],
               ),
@@ -116,30 +104,47 @@ class FoodDeliveryApp extends StatelessWidget {
             const Text(
               'Popular Food',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 22,
                 fontWeight: FontWeight.bold,
               ),
             ),
 
             const SizedBox(height: 12),
 
-            // Food cards
-            const FoodCard(
-              name: 'Cheese Burger',
-              price: '₹149',
-              icon: Icons.lunch_dining,
-            ),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                int crossAxisCount = constraints.maxWidth >= 900
+                    ? 3
+                    : constraints.maxWidth >= 600
+                        ? 2
+                        : 1;
 
-            const FoodCard(
-              name: 'Margherita Pizza',
-              price: '₹199',
-              icon: Icons.local_pizza,
-            ),
-
-            const FoodCard(
-              name: 'Veg Noodles',
-              price: '₹129',
-              icon: Icons.ramen_dining,
+                return GridView.count(
+                  crossAxisCount: crossAxisCount,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                  childAspectRatio: 2.4,
+                  children: const [
+                    FoodCard(
+                      name: 'Cheese Burger',
+                      price: '₹149',
+                      icon: Icons.lunch_dining,
+                    ),
+                    FoodCard(
+                      name: 'Margherita Pizza',
+                      price: '₹199',
+                      icon: Icons.local_pizza,
+                    ),
+                    FoodCard(
+                      name: 'Veg Noodles',
+                      price: '₹129',
+                      icon: Icons.ramen_dining,
+                    ),
+                  ],
+                );
+              },
             ),
           ],
         ),
@@ -147,6 +152,7 @@ class FoodDeliveryApp extends StatelessWidget {
     );
   }
 }
+
 class CategoryItem extends StatelessWidget {
   final IconData icon;
   final String name;
@@ -162,26 +168,32 @@ class CategoryItem extends StatelessWidget {
     return Container(
       width: 90,
       margin: const EdgeInsets.only(right: 12),
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: Colors.orange.shade50,
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircleAvatar(
-            radius: 30,
-            child: Icon(
-              icon,
-              size: 30,
-            ),
+          Icon(
+            icon,
+            size: 35,
           ),
           const SizedBox(height: 8),
           Text(
             name,
-            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ],
       ),
     );
   }
 }
-  class FoodCard extends StatelessWidget {
+
+class FoodCard extends StatelessWidget {
   final String name;
   final String price;
   final IconData icon;
@@ -196,7 +208,6 @@ class CategoryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
@@ -204,7 +215,6 @@ class CategoryItem extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Stack demonstrates overlapping widgets
           Stack(
             children: [
               Container(
@@ -233,7 +243,6 @@ class CategoryItem extends StatelessWidget {
 
           const SizedBox(width: 12),
 
-          // Column arranges food details vertically
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -257,7 +266,6 @@ class CategoryItem extends StatelessWidget {
             ),
           ),
 
-          // Container + IconButton
           Container(
             decoration: BoxDecoration(
               color: Colors.orange,
