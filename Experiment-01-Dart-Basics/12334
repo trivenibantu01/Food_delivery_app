@@ -1,0 +1,126 @@
+import 'package:flutter/material.dart';
+
+void main() {
+    run App(MyApp());
+}
+class MyAppextend StatelessWidget {
+Widget build(Build Context context) {
+    return Material App(
+            title: 'Responsive News App',
+            theme: ThemeData(
+            primarySwatch: Colors.blue,
+    ),
+    home : NewsHomePage(),
+    );
+}
+}
+
+class NewsHomePage extend StatelessWidget {
+NewsHomePage({super.key});
+
+final List<Map<String, String>> articles = [
+{
+"title": "Breaking News: Market Update",
+"summary": "The stock market faced unprecedented highs...",
+"imageUrl":
+"https://upload.wikimedia.org/wikipedia/commons/1/17/Google-flutter-logo.png"
+},
+{
+"title": "Sports: Local Team Wins Championship",
+"summary": "An exciting game concluded with a victory...",
+"imageUrl":
+"https://images.indianexpress.com/2023/10/INDIAN-CRICKET-TEAM-CROP.png?w=640"
+},
+{
+"title": "Technology: New Smartphone Release",
+"summary": "The latest smartphone model is out...",
+"imageUrl":
+"https://images.samsung.com/is/image/samsung/assets/levant/2407/pcd/smp/New-PCD_Galaxy-Z_Curation-KV_1440x640_pc.jpg?1440_640_JPG"
+},
+{
+"title": "Health: Tips for a Healthy Lifestyle",
+"summary": "Experts share the best tips to stay healthy...",
+"imageUrl":
+"https://www.shutterstock.com/image-photo/health-tips-conceptual-healthy-fresh-260nw-707978182.jpg"
+},
+];
+
+@override
+        Widget build(BuildContext context) {
+var screenWidth = MediaQuery.of(context).size.width;
+
+return Scaffold(
+        appBar: AppBar(
+        title: Text('Responsive News App'),
+),
+body: screenWidth < 600
+                    ? ListView.builder(
+                itemCount: articles.length,
+        itemBuilder: (context, index) {
+return ArticleCard(
+        article: articles[index],
+);
+},
+)
+: GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+crossAxisSpacing: 10,
+mainAxisSpacing: 10,
+),
+itemCount: articles.length,
+itemBuilder: (context, index) {
+return ArticleCard(
+        article: articles[index],
+);
+},
+),
+);
+}
+}
+
+class ArticleCard extends StatelessWidget {
+
+final Map<String, String> article;
+
+const ArticleCard({
+super.key,
+required this.article,
+});
+
+
+@override
+        Widget build(BuildContext context) {
+
+return Card(
+        margin: EdgeInsets.all(10),
+
+child: Column(
+        children: [
+
+Image.network(
+        article["imageUrl"]!,
+height: 150,
+width: double.infinity,
+fit: BoxFit.cover,
+),
+
+SizedBox(height: 10),
+
+Text(
+        article["title"]!,
+style: TextStyle(
+        fontSize: 20,
+fontWeight: FontWeight.bold,
+),
+),
+
+Text(
+        article["summary"]!,
+),
+
+],
+),
+);
+}
+}

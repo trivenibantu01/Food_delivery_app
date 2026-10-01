@@ -1,8 +1,8 @@
 void main() {
-  String customerName = "Triveni";
-  String foodItem = "Veg Biryani";
+  String customerName = "sunni";
+  String foodItem = "chicken Biryani";
   int quantity = 2;
-  double price = 180.0;
+  double price = 100000.0;
 
   double total = quantity * price;
 
