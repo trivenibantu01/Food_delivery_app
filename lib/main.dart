@@ -181,7 +181,7 @@ class CategoryItem extends StatelessWidget {
     );
   }
 }
-class FoodCard extends StatelessWidget {
+  class FoodCard extends StatelessWidget {
   final String name;
   final String price;
   final IconData icon;
@@ -195,27 +195,83 @@ class FoodCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      child: ListTile(
-        leading: CircleAvatar(
-          radius: 30,
-          child: Icon(
-            icon,
-            size: 30,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        color: Colors.orange.shade50,
+      ),
+      child: Row(
+        children: [
+          // Stack demonstrates overlapping widgets
+          Stack(
+            children: [
+              Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  color: Colors.orange.shade100,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  icon,
+                  size: 45,
+                ),
+              ),
+              const Positioned(
+                top: 4,
+                right: 4,
+                child: Icon(
+                  Icons.favorite,
+                  size: 20,
+                  color: Colors.red,
+                ),
+              ),
+            ],
           ),
-        ),
-        title: Text(
-          name,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
+
+          const SizedBox(width: 12),
+
+          // Column arranges food details vertically
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  price,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        subtitle: Text(price),
-        trailing: IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.add_shopping_cart),
-        ),
+
+          // Container + IconButton
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.orange,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.add_shopping_cart,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -46,3 +46,17 @@ Food_delivery_app/
 ├── pubspec.lock
 ├── README.md
 └── .gitignore
+## Experiments Progress
+
+| Experiment | Topic | Status |
+|---|---|---|
+| 1 | Dart Basics | Completed |
+| 2 | Flutter Widgets & Layouts | Completed |
+| 3 | Responsive UI | Pending |
+| 4 | Navigator | Pending |
+| 5 | State Management | Pending |
+| 6 | Custom Widgets & Themes | Pending |
+| 7 | Forms & Validation | Pending |
+| 8 | Animations | Pending |
+| 9 | REST API | Pending |
+| 10 | Unit Testing & Debugging | Pending |
