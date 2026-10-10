@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 
-
+import 'service/food_api_service.dart';
 
 
 
@@ -412,6 +412,16 @@ class _HomePageState extends State<HomePage> {
 
   ];
 
+  final FoodApiService _foodApiService = FoodApiService();
+
+  late Future<List<Map<String, dynamic>>> _foodsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _foodsFuture = _foodApiService.fetchFoods();
+  }
+
 
 
 
@@ -759,6 +769,75 @@ class _HomePageState extends State<HomePage> {
 
 
                     const SizedBox(height: 26),
+                    
+const Text(
+  'Fresh Picks from API',
+  style: TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+  ),
+),
+const SizedBox(height: 12),
+
+FutureBuilder<List<Map<String, dynamic>>>(
+  future: _foodsFuture,
+  builder: (context, snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return const Center(
+        child: Padding(
+          padding: EdgeInsets.all(20),
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    if (snapshot.hasError) {
+      return const Text(
+        'Unable to load food data. Please try again.',
+      );
+    }
+
+    final products = snapshot.data ?? [];
+
+    if (products.isEmpty) {
+      return const Text('No food data available.');
+    }
+
+    return Column(
+      children: products.map((product) {
+        return Card(
+          margin: const EdgeInsets.only(bottom: 12),
+          child: ListTile(
+            leading: Image.network(
+              product['thumbnail'] ?? '',
+              width: 65,
+              height: 65,
+              fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) =>
+                  const Icon(Icons.fastfood, size: 35),
+            ),
+            title: Text(
+              product['title']?.toString() ?? 'Food item',
+            ),
+            subtitle: Text(
+              'Category: ${product['category'] ?? 'Food'}',
+            ),
+            trailing: Text(
+              '₹${product['price'] ?? '--'}',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.deepOrange,
+              ),
+            ),
+          ),
+        );
+      }).toList(),
+    );
+  },
+),
+
+const SizedBox(height: 20),
+
 
 
 
