@@ -813,8 +813,8 @@ FutureBuilder<List<Map<String, dynamic>>>(
               width: 65,
               height: 65,
               fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) =>
-                  const Icon(Icons.fastfood, size: 35),
+              errorBuilder: (context, error, stackTrace) =>
+    const Icon(Icons.fastfood, size: 35),
             ),
             title: Text(
               product['title']?.toString() ?? 'Food item',
@@ -893,12 +893,11 @@ const SizedBox(height: 20),
 
 
 
-                              onSelected: (_) =>
-
-
-
-                                  setState(() => selectedCategory = category),
-
+                             onSelected: (selected) {
+  if (selected) {
+    setState(() => selectedCategory = category);
+  }
+},
 
 
                             ),
@@ -1367,7 +1366,7 @@ Widget foodPhoto(FoodItem food, {double size = 64, double radius = 14}) {
 
         height: size,
 
-        color: Colors.deepOrange.withOpacity(0.10),
+        color: Colors.deepOrange.withValues(alpha: 0.10),
 
         alignment: Alignment.center,
 
@@ -1390,8 +1389,7 @@ child: Icon(
 
           height: size,
 
-          color: Colors.deepOrange.withOpacity(0.08),
-
+          color: Colors.deepOrange.withValues(alpha: 0.08),
           alignment: Alignment.center,
 
           child: const SizedBox(
@@ -1578,7 +1576,7 @@ class CartPage extends StatelessWidget {
                     child: ListView.separated(
                       padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                       itemCount: cart.items.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 10),
+                      separatorBuilder: (_, _) => const SizedBox(height: 10),
                       itemBuilder: (context, index) {
                         final item = cart.items[index];
                         return Card(
@@ -1653,7 +1651,7 @@ class CartPage extends StatelessWidget {
                           const BorderRadius.vertical(top: Radius.circular(24)),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.06),
+                          color: Colors.black.withValues(alpha: 0.06),
                           blurRadius: 18,
                           offset: const Offset(0, -4),
                         ),
