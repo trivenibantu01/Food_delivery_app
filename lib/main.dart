@@ -1,12 +1,35 @@
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const FoodDeliveryApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => CartModel(),
+      child: const MyApp(),
+    ),
+  );
 }
 
-class FoodDeliveryApp extends StatelessWidget {
-  const FoodDeliveryApp({super.key});
+// EXPERIMENT 5: STATE MANAGEMENT
+class CartModel extends ChangeNotifier {
+  int itemCount = 0;
+
+  void addItem() {
+    itemCount++;
+    notifyListeners();
+  }
+
+  void removeItem() {
+    if (itemCount > 0) {
+      itemCount--;
+      notifyListeners();
+    }
+  }
+}
+
+// MAIN APP
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,16 +37,18 @@ class FoodDeliveryApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Food Delivery',
       theme: ThemeData(
+        useMaterial3: true,
+        scaffoldBackgroundColor: const Color(0xFFFFF8F4),
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.orange,
         ),
-        useMaterial3: true,
       ),
       home: const HomePage(),
     );
   }
 }
 
+// HOME PAGE
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -31,8 +56,31 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Food Delivery'),
         centerTitle: true,
+        backgroundColor: const Color(0xFFFFF8F4),
+        title: const Text('Food Delivery'),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: Consumer<CartModel>(
+              builder: (context, cart, child) {
+                return Row(
+                  children: [
+                    const Icon(Icons.shopping_cart),
+                    const SizedBox(width: 6),
+                    Text(
+                      '${cart.itemCount}',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -42,66 +90,52 @@ class HomePage extends StatelessWidget {
             const Text(
               'What would you like to eat?',
               style: TextStyle(
+                fontSize: 27,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            const TextField(
+              decoration: InputDecoration(
+                hintText: 'Search food...',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(),
+              ),
+            ),
+
+            const SizedBox(height: 30),
+
+            const Text(
+              'Categories',
+              style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 16),
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'Search food...',
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
+            const SizedBox(height: 15),
+
+            const Row(
+              children: [
+                CategoryItem(Icons.lunch_dining, 'Burger'),
+                CategoryItem(Icons.local_pizza, 'Pizza'),
+                CategoryItem(Icons.ramen_dining, 'Noodles'),
+                CategoryItem(Icons.local_drink, 'Drinks'),
+                CategoryItem(Icons.cake, 'Dessert'),
+              ],
             ),
-            const SizedBox(height: 24),
-            const Text(
-              'Categories',
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 12),
-            SizedBox(
-              height: 110,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: const [
-                  CategoryItem(
-                    icon: Icons.fastfood,
-                    name: 'Burger',
-                  ),
-                  CategoryItem(
-                    icon: Icons.local_pizza,
-                    name: 'Pizza',
-                  ),
-                  CategoryItem(
-                    icon: Icons.ramen_dining,
-                    name: 'Noodles',
-                  ),
-                  CategoryItem(
-                    icon: Icons.local_drink,
-                    name: 'Drinks',
-                  ),
-                  CategoryItem(
-                    icon: Icons.cake,
-                    name: 'Dessert',
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24),
+
+            const SizedBox(height: 30),
+
             const Text(
               'Popular Food',
               style: TextStyle(
-                fontSize: 22,
+                fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 15),
+
             LayoutBuilder(
               builder: (context, constraints) {
                 final columns = constraints.maxWidth >= 900
@@ -116,7 +150,7 @@ class HomePage extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   crossAxisSpacing: 16,
                   mainAxisSpacing: 16,
-                  childAspectRatio: 2.4,
+                  childAspectRatio: 2.5,
                   children: const [
                     FoodCard(
                       name: 'Cheese Burger',
@@ -144,41 +178,40 @@ class HomePage extends StatelessWidget {
   }
 }
 
+// EXPERIMENT 6: REUSABLE CATEGORY WIDGET
 class CategoryItem extends StatelessWidget {
   final IconData icon;
   final String name;
 
-  const CategoryItem({
-    super.key,
-    required this.icon,
-    required this.name,
-  });
+  const CategoryItem(this.icon, this.name, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 90,
-      margin: const EdgeInsets.only(right: 12),
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: Colors.orange.shade50,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, size: 35),
-          const SizedBox(height: 8),
-          Text(
-            name,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ],
+    return Expanded(
+      child: Container(
+        margin: const EdgeInsets.only(right: 8),
+        padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 2),
+        decoration: BoxDecoration(
+          color: const Color(0xFFFFF1DC),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          children: [
+            Icon(icon, size: 28),
+            const SizedBox(height: 8),
+            Text(
+              name,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 12),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
+// FOOD CARD: ADD TO CART UPDATES STATE ONLY
 class FoodCard extends StatelessWidget {
   final String name;
   final String price;
@@ -193,164 +226,83 @@ class FoodCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(16),
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => FoodDetailsPage(
-              name: name,
-              price: price,
-              icon: icon,
-            ),
-          ),
-        );
-      },
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          color: Colors.orange.shade50,
-        ),
-        child: Row(
-          children: [
-            Stack(
-              children: [
-                Container(
-                  width: 80,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    color: Colors.orange.shade100,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(icon, size: 45),
-                ),
-                const Positioned(
-                  top: 4,
-                  right: 4,
-                  child: Icon(
-                    Icons.favorite,
-                    size: 20,
-                    color: Colors.red,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    name,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    price,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.orange,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => FoodDetailsPage(
-                        name: name,
-                        price: price,
-                        icon: icon,
-                      ),
-                    ),
-                  );
-                },
-                icon: const Icon(
-                  Icons.add_shopping_cart,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ],
-        ),
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFFF1DC),
+        borderRadius: BorderRadius.circular(20),
       ),
-    );
-  }
-}
-
-class FoodDetailsPage extends StatelessWidget {
-  final String name;
-  final String price;
-  final IconData icon;
-
-  const FoodDetailsPage({
-    super.key,
-    required this.name,
-    required this.price,
-    required this.icon,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Food Details'),
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+      child: Row(
+        children: [
+          Stack(
             children: [
-              Icon(
-                icon,
-                size: 100,
-                color: Colors.orange,
-              ),
-              const SizedBox(height: 24),
-              Text(
-                name,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
+              Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFDFB0),
+                  borderRadius: BorderRadius.circular(14),
                 ),
+                child: Icon(icon, size: 42),
               ),
-              const SizedBox(height: 12),
-              Text(
-                'Price: $price',
-                style: const TextStyle(fontSize: 22),
-              ),
-              const SizedBox(height: 24),
-              const Text(
-                'Enjoy your delicious food!',
-                style: TextStyle(fontSize: 16),
-              ),
-              const SizedBox(height: 32),
-              ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: const Icon(Icons.arrow_back),
-                label: const Text('Back to Menu'),
+              const Positioned(
+                top: 4,
+                right: 4,
+                child: Icon(
+                  Icons.favorite,
+                  color: Colors.red,
+                  size: 20,
+                ),
               ),
             ],
           ),
-        ),
+
+          const SizedBox(width: 12),
+
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(price, style: const TextStyle(fontSize: 16)),
+              ],
+            ),
+          ),
+
+          const SizedBox(width: 4),
+
+          IconButton(
+            tooltip: 'Add to cart',
+            style: IconButton.styleFrom(
+              backgroundColor: Colors.orange,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            icon: const Icon(Icons.add_shopping_cart),
+            onPressed: () {
+              context.read<CartModel>().addItem();
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('$name added to cart'),
+                  duration: const Duration(seconds: 1),
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
